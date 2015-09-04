@@ -33,6 +33,16 @@ module Apartment
       @tenant_name.respond_to?(:call) ? @tenant_name.call(name) : name
     end
 
+    def prepend_environment=(flag)
+      Apartment::Deprecation.warn "[Deprecation Warning] `prepend_environment` is now deprecated, please use `tenant_name`"
+      self.tenant_name = lambda { |name| "#{Rails.env}_#{name}" } if flag
+    end
+
+    def append_environment=(flag)
+      Apartment::Deprecation.warn "[Deprecation Warning] `append_environment` is now deprecated, please use `tenant_name`"
+      self.tenant_name = lambda { |name| "#{name}_#{Rails.env}" } if flag
+    end
+
     # Whether or not db:migrate should also migrate tenants
     # defaults to true
     def db_migrate_tenants

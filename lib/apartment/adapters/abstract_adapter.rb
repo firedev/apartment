@@ -168,26 +168,16 @@ module Apartment
         raise TenantNotFound, "The tenant #{environmentify(tenant)} cannot be found."
       end
 
-      #   Process through config.tenant_name if set and Prepend the environment
-      #   if configured and the environment isn't already there.
+      #   Process through config.tenant_name if set
       #
       #   @param {String} tenant Database name
-      #   @return {String} tenant name with Rails environment *optionally* prepended
+      #   @return {String} Database name processed by config.tenant_name
       #
       def environmentify(tenant)
-        tenant = Apartment.tenant_name(tenant)
-        environmentify_name(tenant) || tenant
+        Apartment.tenant_name(tenant)
       end
 
-      def environmentify_name(tenant)
-        return if tenant.include?(Rails.env)
-        if Apartment.prepend_environment
-          "#{Rails.env}_#{tenant}"
-        elsif Apartment.append_environment
-          "#{tenant}_#{Rails.env}"
-        end
-      end
-
+      #
       #   Import the database schema
       #
       def import_database_schema

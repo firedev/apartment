@@ -86,8 +86,12 @@ describe Apartment do
     end
 
     context "tenant_name" do
+      subject do
+        Apartment.tenant_name("name")
+      end
+
       it "should return tenant_name as is" do
-        expect(Apartment.tenant_name('name')).to eq 'name'
+        expect(subject).to eq 'name'
       end
 
       it "should invoke the proc if appropriate" do
@@ -96,7 +100,28 @@ describe Apartment do
         Apartment.configure do |config|
           config.tenant_name = tenant_name
         end
-        expect(Apartment.tenant_name("name")).to eq "prefix_name"
+
+        expect(subject).to eq "prefix_name"
+      end
+
+      it "prepend_environment" do
+        expect(Apartment::Deprecation).to receive :warn
+
+        Apartment.configure do |config|
+          config.prepend_environment = true
+        end
+
+        expect(subject).to eq "test_name"
+      end
+
+      it "append_environment" do
+        expect(Apartment::Deprecation).to receive :warn
+
+        Apartment.configure do |config|
+          config.append_environment = true
+        end
+
+        expect(subject).to eq "name_test"
       end
     end
   end
