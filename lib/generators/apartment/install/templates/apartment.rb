@@ -29,6 +29,11 @@ Apartment.configure do |config|
   # In order to amend tenant database names or prefix them with your
   # application name you can set up the transformation as follows.
   #
+  # config.tenant_name = lambda(name) { "application_#{name}" }
+
+  # In order to amend tenant database names or prefix them with your
+  # application name you can set up the transformation as follows.
+  #
   # config.tenant_name = lambda { |name| "application_#{name}" }
 
   #
